@@ -21,7 +21,7 @@ learning_rate = 0.001
 import torch
 import torch.nn
 
-
+'''
 class ContrastiveLoss(torch.nn.Module):
     """
     Contrastive loss function.
@@ -29,35 +29,40 @@ class ContrastiveLoss(torch.nn.Module):
     """
 
     def __init__(self, margin=1.0):
-        super(ContrastiveLoss, self).__init__()
-        self.margin = margin
 
-    def check_type_forward(self, in_types):
-        assert len(in_types) == 3
+class ContrastiveLoss(torch.nn.Module):
 
-        x0_type, x1_type, y_type = in_types
-        assert x0_type.size() == x1_type.shape
-        assert x1_type.size()[0] == y_type.shape[0]
-        assert x1_type.size()[0] > 0
-        assert x0_type.dim() == 2
-        assert x1_type.dim() == 2
-        assert y_type.dim() == 1
+      def __init__(self, margin=2.0):
+            super(ContrastiveLoss, self).__init__()
+            self.margin = margin
 
-    def forward(self, x0, x1, y):
-        self.check_type_forward((x0, x1, y))
+      def forward(self, output1, output2, label):
+            print('jajajaja',output1.size(), output2.size())
+            # Find the pairwise distance or eucledian distance of two output feature vectors
+            euclidean_distance = F.pairwise_distance(output1, output2)
+            # perform contrastive loss calculation with the distance
+            loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
+            (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
 
-        # euclidian distance
-        diff = x0 - x1
-        dist_sq = torch.sum(torch.pow(diff, 2), 1)
-        dist = torch.sqrt(dist_sq)
+            return loss_contr
 
-        mdist = self.margin - dist
-        dist = torch.clamp(mdist, min=0.0)
-        loss = y * dist_sq + (1 - y) * torch.pow(dist, 2)
-        loss = torch.sum(loss) / 2.0 / x0.size()[0]
-        return loss
+'''
 
+class ContrastiveLoss(torch.nn.Module):
 
+      def __init__(self, margin=1.0):
+            super(ContrastiveLoss, self).__init__()
+            self.margin = margin
+
+      def forward(self, output1, output2, label):
+           # print('jajaja',output1.size(), output2.size())
+            # Find the pairwise distance or eucledian distance of two output feature vectors
+            euclidean_distance = F.pairwise_distance(output1, output2)
+            # perform contrastive loss calculation with the distance
+            loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
+            (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
+
+            return loss_contrastive
 '''
 #input
 x_train = np.array([[3.3, 1.2, 4.2, 2.1], [13.2, 31.2, 12.1, 13.2]], dtype=np.float32)
@@ -140,6 +145,7 @@ class NeuralLinearNet(torch.nn.Module):
         out = self.relu(out)
         out = self.fc2(out)
         out = self.relu(out)
+        #out = out.view(out.size(0), -1)
        # out = self.relu(out)
        # out = self.fc3(out)
        # out = self.relu(out)
@@ -163,7 +169,7 @@ def get_input(c):
 	#R-R-1
 	if(c == 1):
 		ret_1 = []
-        ret_3 = []
+                ret_3 = []
 		ret_2 = [1]
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
@@ -189,7 +195,8 @@ def get_input(c):
 	elif(c == 2):
 		#did not code ba=bc=bb=bd case
 		ret_1 = []
-		ret_2 = [c]
+		ret_3 = []
+                ret_2 = [c]
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
@@ -208,12 +215,13 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(0)
-		ret_1.append(0)
+		ret_3.append(0)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 	#C-C-1
 	elif(c == 3):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-2.5, 2.5)
@@ -232,12 +240,13 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(1)
-		ret_1.append(1)
+		ret_3.append(1)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 	#C-C-0
 	elif(c == 4):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-2.5, 2.5)
@@ -256,13 +265,14 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(1)
-		ret_1.append(1)
+		ret_3.append(1)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 	
 	#I-I-1	
 	elif(c == 5):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-2.0, 2.0)
@@ -281,7 +291,7 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(3)
-		ret_1.append(3)
+		ret_3.append(3)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 		
 	#I-I-0	
@@ -289,6 +299,7 @@ def get_input(c):
 #		elif(c == 5):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-2.0, 2.0)
@@ -307,13 +318,14 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(3)
-		ret_1.append(3)
+		ret_3.append(3)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 		
 	#T-T-1	
 	elif(c == 7):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-1.0, 1.0)
@@ -332,13 +344,14 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(2)
-		ret_1.append(2)
+		ret_3.append(2)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 		
 	#T-T-0	
 	elif(c == 8):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(-1.0, 1.0)
@@ -357,12 +370,13 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(2)
-		ret_1.append(2)
+		ret_3.append(2)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
     #R-I-0
 	elif(c == 9):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
 		ba = random.uniform(0, 50)
@@ -380,13 +394,14 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(0)
-		ret_1.append(3)
+		ret_3.append(3)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 
     #R-C-0
 	elif(c == 10):
 		ret_1 = []
 		ret_2 = [c]
+                ret_3 = []
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
 		ba = random.uniform(0, 50)
@@ -404,7 +419,7 @@ def get_input(c):
 		ret_3.append(bc)
 		ret_3.append(bd)
 		ret_1.append(0)
-		ret_1.append(1)
+		ret_3.append(1)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 	
 	
@@ -419,14 +434,22 @@ for epoch in range(num_epochs):
     
     c = 1
     loss = 0
+    zz = 0
     for j in range(1000):
+                #print(j)
 		x_inp, y_inp, x_inp_2 = get_input(c)
 		x_inp = torch.from_numpy(x_inp).to(device)
-        x_inp_2 = torch.from_numpy(x_inp_2).to(device)
+                x_inp_2 = torch.from_numpy(x_inp_2).to(device)
 		y_inp = torch.from_numpy(y_inp).to(device)
 		output_a = Amodel(x_inp.float())
-        output_b = Amodel(x_inp_2.float())
-		loss += LOSS_FUNCTION(output_a, output_b, y_inp)
+                zz = zz + 1
+                #if(zz % 10 == 0):
+                #    print('hey', zz)
+                output_b = Amodel(x_inp_2.float())
+                output_a = output_a.unsqueeze(0)
+                output_b = output_b.unsqueeze(0)
+               # print('hey', output_a.size(), output_b.size())
+		loss += LOSS_FUNCTION(output_a, output_b, y_inp.float())
 		c = c + 1
 		if(c == 11):
 			c = 1
@@ -437,7 +460,7 @@ for epoch in range(num_epochs):
     print('Epoch:', epoch,  'loss:', loss.item())
 print('hw')
 torch.save(Amodel, 'Amodel_mlp.ckpt')
-
+'''
 #10.5739139352,0.2,1.78257088198,0.2,0
 MPObj = torch.load('./Amodel_mlp.ckpt').cuda()
 z = [14.7245656932, 22.0483378369,-2.42539837758,-2.42539837758,16.6421787591,23.3322613972,-2.22539837758,-2.22539837758, 0,0]
@@ -446,4 +469,5 @@ x_inp = torch.from_numpy(z).to(device)
 print(x_inp)
 op = MPObj(x_inp.float())
 print(op)
+'''
 
