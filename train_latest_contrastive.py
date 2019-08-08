@@ -212,10 +212,10 @@ def get_input(c):
 		bd = bc
 		rn = random.randint(1,101)
 		if(rn % 2 == 0):
-				lc = lb + random.uniform(5.5, 20.5)
+				lc = lb + random.uniform(1.0, 20.5)
 				ld = lc + random.uniform(1.5, 8.0)
 		else:
-				ld = la - random.uniform(5.5, 20.5)
+				ld = la - random.uniform(1.0, 20.5)
 				lc = ld - random.uniform(1.5, 8.0)
 		ret_1.append(la)
 		ret_1.append(lb)
@@ -550,8 +550,8 @@ for epoch in range(num_epochs):
 
 		'''
 
-print('hw')
-torch.save(Amodel, 'Amodel_mlp.ckpt')
+#print('hw')
+#torch.save(Amodel, 'Amodel_mlp.ckpt')
 
 '''
 #10.5739139352,0.2,1.78257088198,0.2,0
@@ -564,7 +564,7 @@ op = MPObj(x_inp.float())
 print(op)
 '''
 sys.stdout = open('out_lol.txt','wt')
-MPObj = torch.load('./saved_ckpt_2/latest_save_00400.pt').cuda()
+MPObj = torch.load('./saved_ckpt_2/latest_save_00330.pt').cuda()
 print(x_test.shape)
 idx = [0, 2, 1, 3, 4]
 for z in range(x_test.shape[0] - 1):
@@ -573,16 +573,16 @@ for z in range(x_test.shape[0] - 1):
 		fu_next = x_test[k]
 		fu = fu[idx]
 		fu_next = fu_next[idx]
-		if(fu[0] < fu[1]):
+		if(fu[0] > fu[1]):
 			fu[0], fu[1] = fu[1], fu[0]
-		if(fu_next[0] < fu_next[1]):
+		if(fu_next[0] > fu_next[1]):
 			fu_next[0], fu_next[1] = fu_next[1], fu_next[0]
 		#print(np.array(fu[idx]))
 		fu = torch.from_numpy(np.array(fu)).to(device)
 		fu_next = torch.from_numpy(np.array(fu_next)).to(device)
 		output_a = MPObj(fu.float())
 		output_b = MPObj(fu_next.float())
-		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 350.0):
+		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 40.0):
 			print('Comparison between node {} and node {}'.format(z + 1, k + 1))
 			print(torch.dist(output_a.squeeze(), output_b.squeeze(), 2))
 		#f = open("output.txt", "a")
