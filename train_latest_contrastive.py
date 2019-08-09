@@ -13,11 +13,11 @@ device = 'cuda'
 #hyper parameters
 input_size = 5
 output_size = 8
-hl1_size = 30
-hl2_size = 30
-hl3_size = 32
+hl1_size = 70
+hl2_size = 90
+hl3_size = 15
 hl4_size = 16
-num_epochs = 350
+num_epochs = 200
 learning_rate = 0.001
 
 import torch
@@ -197,7 +197,7 @@ def get_input(c):
 	elif(c == 2):
 		ret_1 = []
 		ret_3 = []
-                ret_2 = [100]
+                ret_2 = [500]
 	 	#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
@@ -256,7 +256,7 @@ def get_input(c):
 	#C-C-0
 	elif(c == 4):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [1000]
                 ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
@@ -309,7 +309,7 @@ def get_input(c):
 	elif(c == 6):
 #		elif(c == 5):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [500]
                 ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
@@ -361,7 +361,7 @@ def get_input(c):
 	#T-T-0	
 	elif(c == 8):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [500]
                 ret_3 = []
 		#ret_2 = np.array(ret_2)
 		la = random.uniform(0,50)
@@ -386,7 +386,7 @@ def get_input(c):
     #R-I-0
 	elif(c == 9):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [500]
                 ret_3 = []
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
@@ -411,10 +411,10 @@ def get_input(c):
     #R-C-0
 	elif(c == 10):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [500]
                 ret_3 = []
 		la = random.uniform(0,50)
-		lb = la + random.uniform(1.5, 4.0)
+		lb = la + random.uniform(1.5, 8.0)
 		ba = random.uniform(0, 50)
 		bb = ba
 		lc = random.uniform(0,50)
@@ -436,7 +436,7 @@ def get_input(c):
     #R-T-0
 	elif(c == 11):
 		ret_1 = []
-		ret_2 = [100]
+		ret_2 = [500]
                 ret_3 = []
 		la = random.uniform(0,50)
 		lb = la + random.uniform(1.5, 4.0)
@@ -483,12 +483,89 @@ def get_input(c):
 		ret_3.append(0)
 		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 
+	#make changes below this.
+    #C-I-0
+	elif(c == 13):
+		ret_1 = []
+                ret_3 = []
+                ret_2 = [500]
+		#ret_2 = np.array(ret_2)
+		la = random.uniform(0,50)
+		lb = la + random.uniform(-2.5, 2.5)
+		ba = random.uniform(0, 50)
+		bb = ba + random.uniform(-3.5, 3.5)
+		lc = random.uniform(0,50)
+		ld = lc + random.uniform(-4.0, 4.0)
+		bc = random.uniform(-50, 50)
+		bd = bc
+		ret_1.append(la)
+		ret_1.append(lb)
+		ret_1.append(ba)
+		ret_1.append(bb)
+		ret_3.append(lc)
+		ret_3.append(ld)
+		ret_3.append(bc)
+		ret_3.append(bd)
+		ret_1.append(1)
+		ret_3.append(3)
+		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 
+	#C-T-0
+	elif(c == 14):
+		ret_1 = []
+                ret_3 = []
+                ret_2 = [500]
+		#ret_2 = np.array(ret_2)
+		la = random.uniform(0,50)
+		lb = la + random.uniform(-2.5, 2.5)
+		ba = random.uniform(0, 50)
+		bb = ba + random.uniform(-3.5, 3.5)
+		lc = random.uniform(0,50)
+		ld = lc + random.uniform(-1.0, 1.0)
+		bc = random.uniform(-50, 50)
+		bd = bc
+		ret_1.append(la)
+		ret_1.append(lb)
+		ret_1.append(ba)
+		ret_1.append(bb)
+		ret_3.append(lc)
+		ret_3.append(ld)
+		ret_3.append(bc)
+		ret_3.append(bd)
+		ret_1.append(1)
+		ret_3.append(2)
+		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
+
+	#T-I-0
+	elif(c == 15):
+		ret_1 = []
+                ret_3 = []
+                ret_2 = [500]
+		#ret_2 = np.array(ret_2)
+		lc = random.uniform(0,50)
+		ld = lc + random.uniform(-4.0, 4.0)
+		bc = random.uniform(-50, 50)
+		bd = bc
+		la = random.uniform(0,50)
+		lb = la + random.uniform(-1.0, 1.0)
+		ba = random.uniform(-50, 50)
+		bb = ba
+		ret_1.append(la)
+		ret_1.append(lb)
+		ret_1.append(ba)
+		ret_1.append(bb)
+		ret_3.append(lc)
+		ret_3.append(ld)
+		ret_3.append(bc)
+		ret_3.append(bd)
+		ret_1.append(2)
+		ret_3.append(3)
+		return(np.array(ret_1), np.array(ret_2), np.array(ret_3))
 	
 	
 #MLP to check node equality.
 #start training
-'''
+
 for epoch in range(num_epochs):
 	
     #inputs = torch.from_numpy(x_train).to(device)
@@ -515,7 +592,7 @@ for epoch in range(num_epochs):
 		loss += LOSS_FUNCTION(output_a, output_b, y_inp.float())
 		#print(c, torch.dist(output_a.squeeze(), output_b.squeeze(), 2))
 		c = c + 1
-		if(c == 13):
+		if(c == 16):
 			c = 1
 			    #backward
     optimizer.zero_grad()
@@ -530,12 +607,12 @@ for epoch in range(num_epochs):
 
 #print('hw')
 #torch.save(Amodel, 'Amodel_mlp.ckpt')
-'''
+
 
 
 
 sys.stdout = open('out_lol.txt','wt')
-MPObj = torch.load('./saved_ckpt_2/latest_save_00140.pt').cuda()
+MPObj = torch.load('./saved_ckpt_2/latest_save_00060.pt').cuda()
 print(x_test.shape)
 idx = [0, 2, 1, 3, 4]
 for z in range(x_test.shape[0] - 1):
@@ -553,7 +630,7 @@ for z in range(x_test.shape[0] - 1):
 		fu_next = torch.from_numpy(np.array(fu_next)).to(device)
 		output_a = MPObj(fu.float())
 		output_b = MPObj(fu_next.float())
-		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 30.0):
+		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 1120.0):
 			print('Comparison between node {} and node {}'.format(z + 1, k + 1))
 			print(torch.dist(output_a.squeeze(), output_b.squeeze(), 2))
 		#f = open("output.txt", "a")
