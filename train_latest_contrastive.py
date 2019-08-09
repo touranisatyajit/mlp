@@ -565,7 +565,7 @@ def get_input(c):
 	
 #MLP to check node equality.
 #start training
-
+'''
 for epoch in range(num_epochs):
 	
     #inputs = torch.from_numpy(x_train).to(device)
@@ -583,12 +583,9 @@ for epoch in range(num_epochs):
 		y_inp = torch.from_numpy(y_inp).to(device)
 		output_a = Amodel(x_inp.float())
                 zz = zz + 1
-                #if(zz % 10 == 0):
-                #    print('hey', zz)
                 output_b = Amodel(x_inp_2.float())
                 output_a = output_a.unsqueeze(0)
                 output_b = output_b.unsqueeze(0)
-               # print('hey', output_a.size(), output_b.size())
 		loss += LOSS_FUNCTION(output_a, output_b, y_inp.float())
 		#print(c, torch.dist(output_a.squeeze(), output_b.squeeze(), 2))
 		c = c + 1
@@ -607,30 +604,32 @@ for epoch in range(num_epochs):
 
 #print('hw')
 #torch.save(Amodel, 'Amodel_mlp.ckpt')
+'''
 
 
 
-
-sys.stdout = open('out_lol.txt','wt')
+sys.stdout = open('out.txt','wt')
 MPObj = torch.load('./saved_ckpt_2/latest_save_00060.pt').cuda()
 print(x_test.shape)
 idx = [0, 2, 1, 3, 4]
 for z in range(x_test.shape[0] - 1):
 	for k in xrange(z + 1, x_test.shape[0] - 1):
-		fu = x_test[z]
-		fu_next = x_test[k]
-		fu = fu[idx]
-		fu_next = fu_next[idx]
-		if(fu[0] > fu[1]):
-			fu[0], fu[1] = fu[1], fu[0]
-		if(fu_next[0] > fu_next[1]):
-			fu_next[0], fu_next[1] = fu_next[1], fu_next[0]
+		datapoint_1 = x_test[z]
+		datapoint_2 = x_test[k]
+		datapoint_1 = datapoint_1[idx]
+		datapoint_2 = datapoint_2[idx]
+		if(datapoint_1[4] != datapoint_2[4]):
+			continue
+		if(datapoint_1[0] > datapoint_1[1]):
+			datapoint_1[0], datapoint_1[1] = datapoint_1[1], datapoint_1[0]
+		if(datapoint_2[0] > datapoint_2[1]):
+			datapoint_2[0], datapoint_2[1] = datapoint_2[1], datapoint_2[0]
 		#print(np.array(fu[idx]))
-		fu = torch.from_numpy(np.array(fu)).to(device)
-		fu_next = torch.from_numpy(np.array(fu_next)).to(device)
-		output_a = MPObj(fu.float())
-		output_b = MPObj(fu_next.float())
-		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 1120.0):
+		datapoint_1 = torch.from_numpy(np.array(datapoint_1)).to(device)
+		datapoint_2 = torch.from_numpy(np.array(datapoint_2)).to(device)
+		output_a = MPObj(datapoint_1.float())
+		output_b = MPObj(datapoint_2.float())
+		if(torch.dist(output_a.squeeze(), output_b.squeeze()) < 20.0):
 			print('Comparison between node {} and node {}'.format(z + 1, k + 1))
 			print(torch.dist(output_a.squeeze(), output_b.squeeze(), 2))
 		#f = open("output.txt", "a")
