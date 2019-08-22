@@ -1,0 +1,43 @@
+(44, 5)
+Comparison between node 5 and node 3
+tensor(3.7874, device='cuda:0')
+Comparison between node 6 and node 2
+tensor(4.1347, device='cuda:0')
+Comparison between node 7 and node 1
+tensor(3.5834, device='cuda:0')
+Comparison between node 16 and node 4
+tensor(18.1053, device='cuda:0')
+Comparison between node 17 and node 15
+tensor(3.0512, device='cuda:0')
+Comparison between node 18 and node 14
+tensor(3.9153, device='cuda:0')
+Comparison between node 19 and node 13
+tensor(3.6052, device='cuda:0')
+Comparison between node 20 and node 12
+tensor(2.9429, device='cuda:0')
+Comparison between node 21 and node 11
+tensor(3.4494, device='cuda:0')
+Comparison between node 22 and node 10
+tensor(4.0246, device='cuda:0')
+Comparison between node 23 and node 9
+tensor(3.1394, device='cuda:0')
+Comparison between node 24 and node 8
+tensor(14.5987, device='cuda:0')
+Comparison between node 32 and node 16
+tensor(19.5414, device='cuda:0')
+Comparison between node 33 and node 31
+tensor(2.2945, device='cuda:0')
+Comparison between node 34 and node 30
+tensor(2.5403, device='cuda:0')
+Comparison between node 35 and node 29
+tensor(2.4810, device='cuda:0')
+Comparison between node 36 and node 28
+tensor(2.8595, device='cuda:0')
+Comparison between node 37 and node 27
+tensor(2.2810, device='cuda:0')
+Comparison between node 39 and node 26
+tensor(1.4403, device='cuda:0')
+Comparison between node 40 and node 25
+tensor(3.1838, device='cuda:0')
+Comparison between node 43 and node 39
+tensor(0.5638, device='cuda:0')
