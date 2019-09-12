@@ -1,4 +1,9 @@
 import numpy as np
+import sys
+
+def swap(s1, s2):
+    return s2, s1
+
 
 ds = np.array([[0,0,8.55575911263,-1.57166745173e-15,0.0],
 [8.55575911263,-1.57166745173e-15,10.1059476471,-1.85643246576e-15,2.0],
@@ -326,4 +331,49 @@ ds = np.array([[0,0,8.55575911263,-1.57166745173e-15,0.0],
 [-5.48385804993,6.05270341431,-9.46320392864,6.05270341431,1.0],
 [-9.46320392864,6.05270341431,-9.46320392864,6.28205161012,1.0]],dtype=np.float32)
 
-print(ds.shape)
+till = ds.shape[0]
+sys.stdout = open('out_nn.txt','wt')
+for i in range(till):
+    dist = 12312414414241222.124421421
+    which = -1
+    for j in xrange(0, i):
+        if(ds[i][4] != ds[j][4]):
+            continue
+        if(ds[i][4] == 2 or ds[i][4] == 3):
+            continue
+        x_cur = ds[i]
+        y_cur = ds[j]
+        if(x_cur[0] > x_cur[2]):
+            swap(x_cur[0], x_cur[2])
+        if(x_cur[1] > x_cur[3]):
+            swap(x_cur[1], x_cur[3])
+            
+        if(y_cur[0] > y_cur[2]):
+            swap(y_cur[0], y_cur[2])
+        if(y_cur[1] > y_cur[3]):
+            swap(y_cur[1], y_cur[3])
+        
+        if(ds[i][4] == 0):
+            if(abs(ds[i][3] - ds[j][3]) < 0.0001):
+                continue
+        cur_dist = 0
+        x = x_cur
+        y = y_cur
+        for z in range(4):
+            if(x[4] == 0):
+                if(z == 0 or z == 2):
+                    cur_dist = cur_dist + 0.01 * ((x[z] - y[z]) * (x[z] - y[z]))
+                else:
+                    cur_dist = cur_dist + ((x[z] - y[z]) * (x[z] - y[z]))
+            else:
+                cur_dist = cur_dist + ((x[z] - y[z]) * (x[z] - y[z]))
+        #if(cur_dist < 200):
+            #print(i + 1, j + 1, cur_dist)
+        if(cur_dist < dist):
+            dist = cur_dist
+            which = j
+    if(which != -1 and dist < 200 and ds[i][4] == 1):
+        print i + 1, ",", which + 1 
+    elif(which != -1 and dist < 2.5 and ds[i][4] == 0):
+        print i + 1, ",", which + 1
+        
