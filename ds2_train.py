@@ -22,6 +22,7 @@ learning_rate = 0.001
 
 
 #new comment for branch check
+x = 10
 '''
 class ContrastiveLoss(torch.nn.Module):
     """
