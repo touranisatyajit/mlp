@@ -21,7 +21,7 @@ num_epochs = 160
 learning_rate = 0.001
 
 
-
+#new comment for branch check
 '''
 class ContrastiveLoss(torch.nn.Module):
     """
